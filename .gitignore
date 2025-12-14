@@ -1,0 +1,5 @@
+myshell
+*.o
+*.log
+.DS_Store
+

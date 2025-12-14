@@ -1,0 +1,7 @@
+total 80
+drwxr-xr-x   5 sharlinpatel  staff    160 Dec 13 21:31 include
+-rw-r--r--   1 sharlinpatel  staff    616 Dec 13 20:49 Makefile
+-rw-r--r--   1 sharlinpatel  staff      0 Dec 13 22:06 myfiles.txt
+-rwxr-xr-x   1 sharlinpatel  staff  35448 Dec 13 22:05 myshell
+drwxr-xr-x  10 sharlinpatel  staff    320 Dec 13 22:05 src
+"hello"
