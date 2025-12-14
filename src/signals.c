@@ -19,8 +19,5 @@ void setup_signals() {
     sa.sa_handler = &handle_sigchld;
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = SA_RESTART | SA_NOCLDSTOP;
-    if (sigaction(SIGCHLD, &sa, 0) == -1) {
-        perror("sigaction");
-        exit(1);
-    }
+    sigaction(SIGCHLD, &sa, 0);
 }
