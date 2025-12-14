@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
-#include <sys/stat.h> // Good practice for open() flags
+#include <sys/stat.h>
 #include "logger.h"
 
 static int log_fd = -1;
