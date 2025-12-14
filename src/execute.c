@@ -10,8 +10,6 @@
 #include "logger.h"
 
 void run_single_command(char **argv) {
-    signal(SIGINT, SIG_DFL);
-
     char *input_file = NULL;
     char *output_file = NULL;
     int append_mode = 0;
@@ -42,13 +40,17 @@ void run_single_command(char **argv) {
 
     if (output_file != NULL) {
         int fd;
-        if (append_mode) fd = open(output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-        else fd = open(output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-
+        if (append_mode)
+            fd = open(output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+        else
+            fd = open(output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        
         if (fd < 0) { perror("open output"); exit(1); }
         dup2(fd, STDOUT_FILENO);
         close(fd);
     }
+
+    signal(SIGINT, SIG_DFL);
 
     if (execvp(argv[0], argv) < 0) {
         perror("myshell");
@@ -71,7 +73,7 @@ void execute_command(char **argv, int background, char *raw_input) {
         char **argv_right = &argv[pipe_index + 1];
 
         int fd[2];
-        if (pipe(fd) == -1) { perror("pipe failed"); return; }
+        if (pipe(fd) == -1) { perror("pipe"); return; }
 
         pid_t pid1 = fork();
         if (pid1 == 0) {
@@ -88,9 +90,8 @@ void execute_command(char **argv, int background, char *raw_input) {
         }
 
         close(fd[0]); close(fd[1]);
-
+        
         log_command(raw_input, pid1, 0);
-
         waitpid(pid1, NULL, 0);
         waitpid(pid2, NULL, 0);
         return;
