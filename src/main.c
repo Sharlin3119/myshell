@@ -30,7 +30,7 @@ int main(void) {
         if (input_buffer[0] == '\0') continue;
         
         char raw_input_copy[MAX_INPUT_SIZE];
-        strcpy(raw_input_copy, input_buffer);
+        strcpy(raw_input_copy, input_buffer); 
 
         char **argv = parse_input(input_buffer);
 
@@ -41,8 +41,8 @@ int main(void) {
                 while (argv[i] != NULL) i++;
                 if (i > 0 && strcmp(argv[i-1], "&") == 0) {
                     background = 1;
-                    free(argv[i-1]);
-                    argv[i-1] = NULL;
+                    free(argv[i-1]); 
+                    argv[i-1] = NULL; 
                 }
                 execute_command(argv, background, raw_input_copy);
             }
