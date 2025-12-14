@@ -1,23 +1,26 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <signal.h>
-#include <sys/wait.h>
+#include <fcntl.h>
 #include <unistd.h>
-#include "signals.h"
+#include <stdio.h>
+#include <string.h>
+#include <sys/stat.h> // Good practice for open() flags
+#include "logger.h"
 
-void handle_sigchld(int sig) {
-    (void)sig;
-    int status;
-    while (waitpid(-1, &status, WNOHANG) > 0) {
+static int log_fd = -1;
+
+void init_logger() {
+    log_fd = open("myshell.log", O_WRONLY | O_CREAT | O_APPEND, 0644);
+    if (log_fd < 0) {
+        perror("Logger failed");
     }
 }
 
-void setup_signals() {
-    signal(SIGINT, SIG_IGN);
+void log_command(char *raw_cmd, pid_t pid, int status) {
+    if (log_fd < 0) return;
+    char buffer[256];
+    int len = snprintf(buffer, sizeof(buffer), "[pid=%d] cmd=\"%s\" status=%d\n", pid, raw_cmd, status);
+    write(log_fd, buffer, len);
+}
 
-    struct sigaction sa;
-    sa.sa_handler = &handle_sigchld;
-    sigemptyset(&sa.sa_mask);
-    sa.sa_flags = SA_RESTART | SA_NOCLDSTOP;
-    sigaction(SIGCHLD, &sa, 0);
+void close_logger() {
+    if (log_fd >= 0) close(log_fd);
 }
