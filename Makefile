@@ -1,27 +1,26 @@
-# Compiler settings
 CC = gcc
 CFLAGS = -Wall -Wextra -g -Iinclude
 
-# Source files and Object files
-# This grabs all .c files in src/ and turns them into .o files
-SRCS = $(wildcard src/*.c)
-OBJS = $(SRCS:.c=.o)
+myshell: src/main.o src/parse.o src/execute.o src/builtin.o src/signals.o src/logger.o
+	$(CC) $(CFLAGS) -o myshell src/main.o src/parse.o src/execute.o src/builtin.o src/signals.o src/logger.o
 
-# The name of your final program
-TARGET = myshell
+src/main.o: src/main.c include/parse.h include/execute.h include/builtin.h include/signals.h include/logger.h
+	$(CC) $(CFLAGS) -c src/main.c -o src/main.o
 
-# 1. The Default Rule: Type 'make' to build this
-all: $(TARGET)
+src/parse.o: src/parse.c include/parse.h
+	$(CC) $(CFLAGS) -c src/parse.c -o src/parse.o
 
-# 2. Linking: How to join .o files into the executable
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(TARGET)
+src/execute.o: src/execute.c include/execute.h include/logger.h
+	$(CC) $(CFLAGS) -c src/execute.c -o src/execute.o
 
-# 3. Compiling: How to turn .c files into .o files
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+src/builtin.o: src/builtin.c include/builtin.h
+	$(CC) $(CFLAGS) -c src/builtin.c -o src/builtin.o
 
-# 4. Clean: Type 'make clean' to remove garbage files
+src/signals.o: src/signals.c include/signals.h
+	$(CC) $(CFLAGS) -c src/signals.c -o src/signals.o
+
+src/logger.o: src/logger.c include/logger.h
+	$(CC) $(CFLAGS) -c src/logger.c -o src/logger.o
+
 clean:
-	rm -f $(OBJS) $(TARGET)
-
+	rm -f src/*.o myshell
