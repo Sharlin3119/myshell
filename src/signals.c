@@ -6,15 +6,15 @@
 #include "signals.h"
 
 void handle_sigchld(int sig) {
-    (void)sig;
+    (void)sig; 
     int status;
     while (waitpid(-1, &status, WNOHANG) > 0) {
+        // Child reaped
     }
 }
 
 void setup_signals() {
     signal(SIGINT, SIG_IGN);
-
     struct sigaction sa;
     sa.sa_handler = &handle_sigchld;
     sigemptyset(&sa.sa_mask);
