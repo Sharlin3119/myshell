@@ -11,7 +11,7 @@
 
 int main(void) {
     char input_buffer[MAX_INPUT_SIZE];
-
+    
     setup_signals();
     init_logger();
 
@@ -28,7 +28,7 @@ int main(void) {
         }
 
         if (input_buffer[0] == '\0') continue;
-
+        
         char raw_input_copy[MAX_INPUT_SIZE];
         strcpy(raw_input_copy, input_buffer);
 
@@ -49,7 +49,7 @@ int main(void) {
         }
         free_argv(argv);
     }
-
+    
     close_logger();
     return 0;
 }
