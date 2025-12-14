@@ -1,29 +1,23 @@
-#include <fcntl.h>
-#include <unistd.h>
-#include <string.h>
 #include <stdio.h>
-#include "logger.h"
+#include <stdlib.h>
+#include <signal.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#include "signals.h"
 
-static int log_fd = -1;
-
-void init_logger() {
-    log_fd = open("myshell.log", O_WRONLY | O_CREAT | O_APPEND, 0644);
-    if (log_fd < 0) {
-        perror("Logger initialization failed");
+void handle_sigchld(int sig) {
+    (void)sig;
+    int status;
+    while (waitpid(-1, &status, WNOHANG) > 0) {
     }
 }
 
-void log_command(char *raw_cmd, pid_t pid, int status) {
-    if (log_fd < 0) return;
+void setup_signals() {
+    signal(SIGINT, SIG_IGN);
 
-    char buffer[256];
-    int len = snprintf(buffer, sizeof(buffer), "[pid=%d] cmd=\"%s\" status=%d\n", pid, raw_cmd, status);
-
-    write(log_fd, buffer, len);
-}
-
-void close_logger() {
-    if (log_fd >= 0) {
-        close(log_fd);
-    }
+    struct sigaction sa;
+    sa.sa_handler = &handle_sigchld;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = SA_RESTART | SA_NOCLDSTOP;
+    sigaction(SIGCHLD, &sa, 0);
 }
