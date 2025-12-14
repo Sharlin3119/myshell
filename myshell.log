@@ -1,0 +1,10 @@
+[pid=5327] cmd="ls" status=0
+[pid=5411] cmd="ls > files" status=0
+[pid=16122] cmd="ls -l" status=0
+[pid=16488] cmd="echo "hello world" > output.txt" status=0
+[pid=16768] cmd="cat outp.txt | grep Hello" status=0
+[pid=17046] cmd="cat output.txt | grep Hello" status=0
+[pid=17354] cmd="sleep 5 &" status=0
+[pid=17442] cmd="cd.." status=256
+[pid=21191] cmd="ls" status=0
+[pid=21405] cmd="echo "testing logger"" status=0
