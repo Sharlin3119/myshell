@@ -40,9 +40,9 @@ void run_single_command(char **argv) {
 
     if (output_file != NULL) {
         int fd;
-        if (append_mode)
+        if (append_mode) 
             fd = open(output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-        else
+        else 
             fd = open(output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
         
         if (fd < 0) { perror("open output"); exit(1); }
@@ -91,7 +91,7 @@ void execute_command(char **argv, int background, char *raw_input) {
 
         close(fd[0]); close(fd[1]);
         
-        log_command(raw_input, pid1, 0);
+        log_command(raw_input, pid1, 0); 
         waitpid(pid1, NULL, 0);
         waitpid(pid2, NULL, 0);
         return;
@@ -103,11 +103,11 @@ void execute_command(char **argv, int background, char *raw_input) {
     } else {
         if (background) {
             printf("[bg] started pid %d\n", pid);
-            log_command(raw_input, pid, 0);
+            log_command(raw_input, pid, 0); 
         } else {
             int status;
             waitpid(pid, &status, 0);
-            log_command(raw_input, pid, status);
+            log_command(raw_input, pid, status); 
         }
     }
 }
