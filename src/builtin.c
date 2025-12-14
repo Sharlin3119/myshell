@@ -8,7 +8,6 @@ int handle_builtin(char **argv) {
     if (strcmp(argv[0], "exit") == 0 || strcmp(argv[0], "quit") == 0) {
         exit(0);
     }
-
     if (strcmp(argv[0], "cd") == 0) {
         if (argv[1] == NULL) {
             chdir(getenv("HOME")); 
@@ -19,6 +18,5 @@ int handle_builtin(char **argv) {
         }
         return 1;
     }
-
     return 0;
 }
