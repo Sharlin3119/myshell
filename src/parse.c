@@ -28,13 +28,12 @@ char **parse_input(char *input) {
 }
 
 void free_argv(char **argv) {
-    if (!argv) return;
-
-    // Loop through the array and free every string we strdup'ed
-    for (int i = 0; argv[i] != NULL; i++) {
-        free(argv[i]);
+    if (!argv) return;                                
+    for (int i = 0; i < MAX_ARGS; i++) {
+        if (argv[i] != NULL) {
+            free(argv[i]);
+        }
     }
     
-    // Finally, free the array itself
     free(argv);
 }
